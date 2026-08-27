@@ -1,0 +1,12 @@
+# Netlify deployment for the Fawaz Al Othman Real Estate website (Next.js SSR).
+# The official Next runtime handles App Router, middleware, route handlers and
+# next/og image generation. No env vars are required for the current build.
+[build]
+  command = "next build"
+  publish = ".next"
+
+[[plugins]]
+  package = "@netlify/plugin-nextjs"
+
+[build.environment]
+  NODE_VERSION = "22"

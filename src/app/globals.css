@@ -1,0 +1,169 @@
+@import "tailwindcss";
+
+/* =============================================================================
+   Fawaz Al Othman Real Estate — website design system
+   Derived from the PropOS design system (tokens.css / globals.css):
+   same type scale, radii, subtle theme-aware shadows, motion easings, and the
+   PropOS blue (#1c7cff) as the interactive accent — translated to a light,
+   institutional navy/white marketing surface with a restrained gold accent.
+   ========================================================================== */
+
+@theme {
+  /* Fonts — Inter (Latin) + IBM Plex Sans Arabic (self-hosted via next/font) */
+  --font-sans: var(--font-inter), system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+  --font-arabic: var(--font-arabic), "Inter", system-ui, sans-serif;
+
+  /* Type scale — matches PropOS (xs lifted to 13px) + display sizes for marketing */
+  --text-xs: 0.8125rem;   --text-xs--line-height: 1.125rem;
+  --text-sm: 0.875rem;    --text-sm--line-height: 1.25rem;
+  --text-base: 1rem;      --text-base--line-height: 1.5rem;
+  --text-lg: 1.125rem;    --text-lg--line-height: 1.75rem;
+  --text-xl: 1.25rem;     --text-xl--line-height: 1.75rem;
+  --text-2xl: 1.5rem;     --text-2xl--line-height: 2rem;    --text-2xl--letter-spacing: -0.01em;
+  --text-3xl: 1.875rem;   --text-3xl--line-height: 2.25rem; --text-3xl--letter-spacing: -0.015em;
+  --text-4xl: 2.25rem;    --text-4xl--line-height: 2.5rem;  --text-4xl--letter-spacing: -0.02em;
+  --text-5xl: 3rem;       --text-5xl--line-height: 1.08;    --text-5xl--letter-spacing: -0.021em;
+  --text-6xl: 3.75rem;    --text-6xl--line-height: 1.05;    --text-6xl--letter-spacing: -0.022em;
+  --text-7xl: 4.5rem;     --text-7xl--line-height: 1.02;    --text-7xl--letter-spacing: -0.024em;
+
+  /* Radii — restrained, from PropOS */
+  --radius-xs: 0.25rem; --radius-sm: 0.375rem; --radius-md: 0.5rem;
+  --radius-lg: 0.625rem; --radius-xl: 0.75rem; --radius-2xl: 1rem; --radius-3xl: 1.5rem;
+
+  --container-content: 1200px;
+  --container-wide: 1320px;
+
+  --ease-standard: cubic-bezier(0.2, 0, 0, 1);
+  --ease-out: cubic-bezier(0, 0, 0.2, 1);
+
+  /* ---- Raw brand palette (fixed) ---- */
+  --color-navy-950: #060b15;
+  --color-navy-900: #0a1324;   /* PropOS brand navy — deep sections / footer */
+  --color-navy-850: #0e1a2f;
+  --color-navy-800: #132238;
+  --color-navy-700: #213456;
+  --color-brand: #1e2a5a;      /* institutional royal navy (harmonizes the logo mark) */
+  --color-blue-700: #0f52b3;
+  --color-blue-600: #1568e0;
+  --color-blue-500: #1c7cff;   /* PropOS accent blue — family resemblance */
+  --color-blue-400: #4d97ff;
+  --color-gold-600: #9c7b3f;
+  --color-gold-500: #b08a46;   /* restrained gold accent */
+  --color-gold-400: #c9a75f;
+
+  /* ---- Semantic tokens (mapped to CSS vars so utilities resolve them) ---- */
+  --color-surface: var(--surface);
+  --color-surface-raised: var(--surface-raised);
+  --color-surface-sunken: var(--surface-sunken);
+  --color-surface-deep: var(--surface-deep);
+  --color-content: var(--content);
+  --color-content-muted: var(--content-muted);
+  --color-content-subtle: var(--content-subtle);
+  --color-content-inverse: var(--content-inverse);
+  --color-border: var(--border);
+  --color-border-subtle: var(--border-subtle);
+  --color-border-strong: var(--border-strong);
+  --color-primary: var(--primary);
+  --color-primary-hover: var(--primary-hover);
+  --color-primary-strong: var(--primary-strong);
+  --color-on-primary: var(--on-primary);
+  --color-gold: var(--gold);
+  --color-gold-soft: var(--gold-soft);
+  --color-focus: var(--focus);
+  --color-success: var(--success);
+  --color-success-soft: var(--success-soft);
+
+  --shadow-xs: 0 1px 2px rgb(var(--shadow-rgb) / 0.06);
+  --shadow-sm: 0 1px 2px rgb(var(--shadow-rgb) / 0.06), 0 1px 3px rgb(var(--shadow-rgb) / 0.08);
+  --shadow-md: 0 4px 12px rgb(var(--shadow-rgb) / 0.08);
+  --shadow-lg: 0 12px 32px rgb(var(--shadow-rgb) / 0.12);
+  --shadow-xl: 0 24px 60px rgb(var(--shadow-rgb) / 0.16);
+}
+
+:root {
+  --surface: #ffffff;
+  --surface-raised: #ffffff;
+  --surface-sunken: #f6f7f9;   /* warm off-white page canvas */
+  --surface-deep: #0a1324;     /* navy sections */
+  --content: #131c2e;          /* charcoal-navy, not pure black */
+  --content-muted: #4a566b;
+  --content-subtle: #6a7688;
+  --content-inverse: #ffffff;
+  --border: #e5e8ee;
+  --border-subtle: #eef0f4;
+  --border-strong: #d3d8e2;
+  --primary: #1c7cff;
+  --primary-hover: #1568e0;
+  --primary-strong: #0f52b3;
+  --on-primary: #ffffff;
+  --gold: #b08a46;
+  --gold-soft: rgba(176, 138, 70, 0.12);
+  --focus: #1568e0;
+  --success: #15803d;
+  --success-soft: rgba(34, 197, 94, 0.12);
+  --shadow-rgb: 16 24 40;
+}
+
+@layer base {
+  html { text-size-adjust: 100%; -webkit-text-size-adjust: 100%; scroll-behavior: smooth; }
+  body {
+    background-color: var(--surface-sunken);
+    color: var(--content);
+    font-family: var(--font-sans);
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+  [dir="rtl"] body, [lang="ar"] body, [lang^="ar"] body { font-family: var(--font-arabic); }
+  ::selection { background-color: color-mix(in oklab, var(--primary) 22%, transparent); }
+  :focus-visible {
+    outline: 2px solid var(--focus);
+    outline-offset: 2px;
+    border-radius: var(--radius-xs);
+  }
+  h1, h2, h3, h4 { text-wrap: balance; }
+  p { text-wrap: pretty; }
+}
+
+@layer utilities {
+  .nums { font-variant-numeric: tabular-nums; font-feature-settings: "tnum" 1; }
+  .container-page { max-width: var(--container-content); margin-inline: auto; padding-inline: 1.25rem; }
+  @media (min-width: 640px) { .container-page { padding-inline: 2rem; } }
+
+  /* Eyebrow label — gold hairline + tracked caps, the one restrained gold touch */
+  .eyebrow {
+    display: inline-flex; align-items: center; gap: 0.5rem;
+    font-size: var(--text-xs); font-weight: 600; letter-spacing: 0.14em;
+    text-transform: uppercase; color: var(--gold);
+  }
+  [lang="ar"] .eyebrow, [dir="rtl"] .eyebrow { letter-spacing: 0.06em; text-transform: none; }
+  .eyebrow::before {
+    content: ""; inline-size: 1.75rem; block-size: 1px;
+    background: linear-gradient(to right, var(--gold), transparent);
+  }
+  [dir="rtl"] .eyebrow::before { background: linear-gradient(to left, var(--gold), transparent); }
+
+  .card-surface {
+    background: var(--surface-raised);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-xl);
+    transition: border-color 180ms var(--ease-standard), box-shadow 180ms var(--ease-standard), transform 180ms var(--ease-standard);
+  }
+  .card-hover:hover {
+    border-color: var(--border-strong);
+    box-shadow: var(--shadow-lg);
+    transform: translateY(-2px);
+  }
+  .link-underline { text-decoration: underline; text-underline-offset: 3px; text-decoration-color: color-mix(in oklab, currentColor 35%, transparent); }
+}
+
+/* Entrance — quiet rise/fade; honors reduced motion below */
+@keyframes rise-in { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+.animate-rise { animation: rise-in 560ms var(--ease-out) both; }
+
+@media (prefers-reduced-motion: reduce) {
+  *, ::before, ::after {
+    animation-duration: 0.01ms !important; animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important; scroll-behavior: auto !important;
+  }
+}
