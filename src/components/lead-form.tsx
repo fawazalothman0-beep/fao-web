@@ -4,7 +4,7 @@ import { useState } from "react";
 import { Field, Input, Select, Textarea, Button } from "@/components/ui";
 import { Icon } from "@/components/icons";
 import { buildLead } from "@/lib/handoff";
-import type { Locale } from "@/config/site";
+import { site, type Locale } from "@/config/site";
 import type { Dict } from "@/i18n/dictionaries";
 import type { PropertyType } from "@/content/properties";
 
@@ -52,10 +52,10 @@ export function LeadForm({
 
   const subject =
     variant === "owner"
-      ? `${dict.owner.title} — ${dict.nav.listProperty}`
+      ? `${site.name[l]} — ${dict.nav.listProperty}`
       : variant === "buyer"
-        ? `${dict.buyer.title}`
-        : `${dict.contact.title} — ${dict.contact.formTitle}`;
+        ? `${site.name[l]} — ${dict.nav.buyerRequest}`
+        : `${site.name[l]} — ${dict.contact.title}`;
 
   const onSubmit = (e: React.FormEvent) => {
     e.preventDefault();
