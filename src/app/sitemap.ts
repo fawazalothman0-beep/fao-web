@@ -5,9 +5,9 @@ import { getProperties } from "@/content/properties";
 
 const STATIC_PATHS = ["", "/properties", "/services", "/about", "/contact", "/list-your-property", "/buyer-requirement"];
 
-export default function sitemap(): MetadataRoute.Sitemap {
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const entries: MetadataRoute.Sitemap = [];
-  const propertyPaths = getProperties().map((p) => `/properties/${p.ref}`);
+  const propertyPaths = (await getProperties()).map((p) => `/properties/${p.ref}`);
   const allPaths = [...STATIC_PATHS, ...propertyPaths];
 
   for (const path of allPaths) {

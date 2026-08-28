@@ -26,7 +26,7 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
   const d = getDict(locale);
   const l = locale as Locale;
   const base = `/${l}`;
-  const featured = getFeatured();
+  const featured = await getFeatured();
 
   return (
     <>

@@ -22,7 +22,7 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { locale, ref } = await params;
   if (!isLocale(locale)) return {};
-  const p = getProperty(ref);
+  const p = await getProperty(ref);
   const d = getDict(locale);
   if (!p) return buildMetadata({ locale, path: `/properties/${ref}`, title: d.property.notFound, description: d.property.notFoundLead });
   const title = `${p.title[locale]} — ${site.name[locale]}`;
@@ -40,7 +40,7 @@ export default async function PropertyPage({
   const l = locale as Locale;
   const d = getDict(l);
   const base = `/${l}`;
-  const p = getProperty(ref);
+  const p = await getProperty(ref);
   if (!p) notFound();
 
   const specs: { label: string; value: string; icon: "bed" | "bath" | "ruler" | "pin" | "tag" | "building" }[] = [];

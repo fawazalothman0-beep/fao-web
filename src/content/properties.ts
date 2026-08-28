@@ -1,24 +1,18 @@
 /**
- * Property inventory — CMS-ready typed source. Swap this module for a DB/CMS
- * fetch later without touching the components (they consume `getProperties`).
+ * Public property source — reads ONLY published properties from the FAO internal
+ * system (Supabase), which is the single source of truth. Nothing is fabricated:
+ * if no property is published internally, the public site shows an empty state.
  *
- * CONTENT INTEGRITY: this array is intentionally EMPTY. No sample/demo/illustrative
- * listings are published — nothing fabricated is presented as real inventory. The
- * UI shows a polished empty state until verified listings are added here (or wired
- * to a CMS/DB). To publish real inventory, add typed `Property` entries below.
+ * Property text is authored in the internal system (Arabic); it is presented on
+ * both locales as-is (Kuwait real-estate titles/areas are commonly Arabic).
  */
+import { createClient } from "@supabase/supabase-js";
+import { cache } from "react";
 
 export type Transaction = "sale" | "rent";
 export type Category = "residential" | "commercial" | "land" | "investment";
 export type PropertyType =
-  | "villa"
-  | "apartment"
-  | "floor"
-  | "land"
-  | "building"
-  | "shop"
-  | "office"
-  | "chalet";
+  | "villa" | "apartment" | "floor" | "land" | "building" | "shop" | "office" | "chalet";
 
 export interface Localized {
   ar: string;
@@ -31,32 +25,62 @@ export interface Property {
   category: Category;
   type: PropertyType;
   title: Localized;
-  area: Localized; // Kuwait area
+  area: Localized;
   governorate: Localized;
-  price: number | null; // KWD
-  size: number | null; // m²
+  price: number | null;
+  size: number | null;
   bedrooms: number | null;
   bathrooms: number | null;
   description: Localized;
   features: Localized[];
-  images: string[]; // real assets only; empty → branded placeholder (never fabricated photos)
-  coords: { lat: number; lng: number } | null; // real coordinates only; null → no map (never invented)
+  images: string[];
+  coords: { lat: number; lng: number } | null;
   featured?: boolean;
 }
 
-/** Verified inventory only. Empty until real listings are provided. */
-export const properties: Property[] = [];
-
-export function getProperties(): Property[] {
-  return properties;
+function db() {
+  return createClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+    { auth: { persistSession: false } },
+  );
 }
 
-export function getProperty(ref: string): Property | undefined {
-  return properties.find((p) => p.ref.toLowerCase() === ref.toLowerCase());
+const both = (s: string | null | undefined): Localized => ({ ar: s ?? "", en: s ?? "" });
+
+function mapRow(r: Record<string, unknown>): Property {
+  return {
+    ref: r.ref as string,
+    transaction: r.transaction as Transaction,
+    category: r.category as Category,
+    type: r.type as PropertyType,
+    title: both(r.title as string),
+    area: both(r.area as string),
+    governorate: both(r.governorate as string),
+    price: (r.price as number) ?? null,
+    size: (r.size as number) ?? (r.built_area as number) ?? (r.land_area as number) ?? null,
+    bedrooms: (r.bedrooms as number) ?? null,
+    bathrooms: (r.bathrooms as number) ?? null,
+    description: both(r.description as string),
+    features: ((r.features as string[]) ?? []).map(both),
+    images: (r.images as string[]) ?? [],
+    coords: r.lat != null && r.lng != null ? { lat: r.lat as number, lng: r.lng as number } : null,
+  };
 }
 
-export function getFeatured(): Property[] {
-  return properties.filter((p) => p.featured).slice(0, 3);
+export const getProperties = cache(async (): Promise<Property[]> => {
+  const { data, error } = await db().rpc("list_published_properties");
+  if (error || !data) return [];
+  return (data as Record<string, unknown>[]).map(mapRow);
+});
+
+export async function getProperty(ref: string): Promise<Property | undefined> {
+  const { data, error } = await db().rpc("get_published_property", { p_ref: ref });
+  if (error || !data) return undefined;
+  const row = Array.isArray(data) ? data[0] : data;
+  return row ? mapRow(row as Record<string, unknown>) : undefined;
 }
 
-export const hasInventory = () => properties.length > 0;
+export async function getFeatured(): Promise<Property[]> {
+  return (await getProperties()).slice(0, 3);
+}

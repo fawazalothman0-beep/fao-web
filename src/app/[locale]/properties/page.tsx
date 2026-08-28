@@ -40,7 +40,8 @@ export default async function PropertiesPage({
   const fArea = one(sp.area).toLowerCase();
   const fMaxPrice = Number(one(sp.maxPrice)) || 0;
 
-  const results = getProperties().filter((p) => {
+  const all = await getProperties();
+  const results = all.filter((p) => {
     if (fTransaction && p.transaction !== fTransaction) return false;
     if (fCategory && p.category !== fCategory) return false;
     if (fType && p.type !== fType) return false;
