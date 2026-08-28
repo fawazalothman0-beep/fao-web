@@ -91,7 +91,7 @@ export function Footer({ locale, dict }: { locale: Locale; dict: Dict }) {
           <p>
             © {year} {site.name[locale]}. {dict.footer.rights}
           </p>
-          <p className="max-w-lg">{dict.footer.illustrativeNote}</p>
+          <p>{site.name[locale === "ar" ? "en" : "ar"]}</p>
         </div>
       </Container>
     </footer>

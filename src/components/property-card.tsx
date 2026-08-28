@@ -54,7 +54,6 @@ export function PropertyCard({
           <Badge tone={property.transaction === "sale" ? "navy" : "blue"}>
             {dict.transaction[property.transaction]}
           </Badge>
-          {property.sample ? <Badge tone="gold">{dict.common.sample}</Badge> : null}
         </div>
       </div>
 

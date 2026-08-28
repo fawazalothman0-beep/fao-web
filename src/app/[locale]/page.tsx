@@ -80,7 +80,8 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
         </Container>
       </Section>
 
-      {/* Featured */}
+      {/* Featured — only when there is verified inventory */}
+      {featured.length > 0 ? (
       <Section>
         <Container>
           <div className="mb-8 flex flex-wrap items-end justify-between gap-4">
@@ -101,6 +102,7 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
           </div>
         </Container>
       </Section>
+      ) : null}
 
       {/* Services */}
       <Section tone="sunken">

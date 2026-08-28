@@ -176,7 +176,7 @@ const en = {
     notes: "Notes",
     notesPlaceholder: "Anything else we should know — size, condition, documents…",
     submit: "Submit property",
-    success: "Thank you. Your details are ready to send — we'll continue on WhatsApp/email.",
+    success: "Thank you. We've received your property details and our team will contact you shortly.",
     successNoChannel:
       "Thank you. Please reach us using the contact details on the Contact page to complete your submission.",
   },
@@ -193,7 +193,7 @@ const en = {
     notes: "Notes",
     notesPlaceholder: "Bedrooms, timeline, must-haves…",
     submit: "Submit request",
-    success: "Thank you. Your request is ready to send — we'll continue on WhatsApp/email.",
+    success: "Thank you. We've received your requirement and our team will contact you shortly.",
     successNoChannel:
       "Thank you. Please reach us using the contact details on the Contact page to complete your request.",
   },
@@ -221,6 +221,7 @@ const en = {
     phone: "Phone",
     message: "Message",
     submit: "Send message",
+    success: "Thank you. We've received your message and will get back to you shortly.",
     channelsTitle: "Contact details",
     noChannels:
       "Our published contact details will appear here. In the meantime, use the form and we'll respond.",
@@ -431,7 +432,7 @@ const ar = {
     notes: "ملاحظات",
     notesPlaceholder: "أي تفاصيل إضافية — المساحة، الحالة، المستندات…",
     submit: "إرسال العقار",
-    success: "شكراً لك. بياناتك جاهزة للإرسال — سنكمل عبر واتساب/البريد.",
+    success: "شكراً لك. استلمنا بيانات عقارك وسيتواصل معك فريقنا قريباً.",
     successNoChannel:
       "شكراً لك. يرجى التواصل معنا عبر بيانات الاتصال في صفحة «تواصل معنا» لإكمال الإضافة.",
   },
@@ -448,7 +449,7 @@ const ar = {
     notes: "ملاحظات",
     notesPlaceholder: "عدد الغرف، الإطار الزمني، الأساسيات…",
     submit: "إرسال الطلب",
-    success: "شكراً لك. طلبك جاهز للإرسال — سنكمل عبر واتساب/البريد.",
+    success: "شكراً لك. استلمنا طلبك وسيتواصل معك فريقنا قريباً.",
     successNoChannel:
       "شكراً لك. يرجى التواصل معنا عبر بيانات الاتصال في صفحة «تواصل معنا» لإكمال طلبك.",
   },
@@ -476,6 +477,7 @@ const ar = {
     phone: "الهاتف",
     message: "الرسالة",
     submit: "إرسال الرسالة",
+    success: "شكراً لك. استلمنا رسالتك وسنعاود التواصل معك قريباً.",
     channelsTitle: "بيانات الاتصال",
     noChannels:
       "ستظهر بيانات الاتصال المعتمدة هنا. في الأثناء، استخدم النموذج وسنعاود التواصل معك.",

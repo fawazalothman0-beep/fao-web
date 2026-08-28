@@ -61,11 +61,6 @@ export default async function PropertiesPage({
           <p className="max-w-2xl text-base text-content-muted">{d.properties.lead}</p>
         </div>
 
-        <div className="mt-4 flex items-start gap-2 rounded-lg border border-gold-soft bg-gold-soft px-4 py-3 text-sm text-gold-600">
-          <Icon name="tag" className="mt-0.5 h-4 w-4 shrink-0" />
-          <span>{d.properties.disclaimer}</span>
-        </div>
-
         <div className="mt-6">
           <PropertyFilters locale={l} dict={d} />
         </div>

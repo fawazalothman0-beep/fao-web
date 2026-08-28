@@ -1,10 +1,9 @@
 "use client";
 
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { Field, Input, Select, Textarea, Button } from "@/components/ui";
 import { Icon } from "@/components/icons";
-import { buildLead } from "@/lib/handoff";
-import { site, type Locale } from "@/config/site";
+import type { Locale } from "@/config/site";
 import type { Dict } from "@/i18n/dictionaries";
 import type { PropertyType } from "@/content/properties";
 
@@ -12,26 +11,13 @@ const TYPES: PropertyType[] = ["villa", "apartment", "floor", "land", "building"
 
 type Variant = "owner" | "buyer" | "contact";
 
-function SuccessPanel({
-  message,
-  href,
-  ctaLabel,
-}: {
-  message: string;
-  href?: string;
-  ctaLabel: string;
-}) {
+function SuccessPanel({ message }: { message: string }) {
   return (
     <div className="flex flex-col items-center gap-4 rounded-2xl border border-success-soft bg-success-soft/60 p-8 text-center">
       <span className="inline-flex h-12 w-12 items-center justify-center rounded-full bg-success text-white">
         <Icon name="check" className="h-6 w-6" strokeWidth={2.5} />
       </span>
       <p className="max-w-md text-base font-medium text-content">{message}</p>
-      {href ? (
-        <Button href={href} variant="primary" target="_blank" rel="noopener noreferrer">
-          {ctaLabel}
-        </Button>
-      ) : null}
     </div>
   );
 }
@@ -40,81 +26,83 @@ export function LeadForm({
   variant,
   locale,
   dict,
+  reference,
 }: {
   variant: Variant;
   locale: Locale;
   dict: Dict;
+  reference?: string; // optional property/request reference this lead is about
 }) {
-  const [done, setDone] = useState<{ href?: string; message: string } | null>(null);
+  const [done, setDone] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
+  const [error, setError] = useState<string | null>(null);
   const [values, setValues] = useState<Record<string, string>>({});
+  const startedAt = useRef<number>(Date.now());
   const set = (k: string, v: string) => setValues((s) => ({ ...s, [k]: v }));
   const l = locale;
 
-  const subject =
-    variant === "owner"
-      ? `${site.name[l]} — ${dict.nav.listProperty}`
-      : variant === "buyer"
-        ? `${site.name[l]} — ${dict.nav.buyerRequest}`
-        : `${site.name[l]} — ${dict.contact.title}`;
-
-  const onSubmit = (e: React.FormEvent) => {
+  const onSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    const fields =
-      variant === "owner"
-        ? [
-            { label: dict.owner.name, value: values.name ?? "" },
-            { label: dict.owner.phone, value: values.phone ?? "" },
-            { label: dict.owner.area, value: values.area ?? "" },
-            { label: dict.owner.type, value: values.type ? dict.ptype[values.type as PropertyType] : "" },
-            { label: dict.owner.transaction, value: values.transaction ? dict.transaction[values.transaction as "sale" | "rent"] : "" },
-            { label: dict.owner.price, value: values.price ?? "" },
-            { label: dict.owner.notes, value: values.notes ?? "" },
-          ]
-        : variant === "buyer"
-          ? [
-              { label: dict.buyer.name, value: values.name ?? "" },
-              { label: dict.buyer.phone, value: values.phone ?? "" },
-              { label: dict.buyer.areas, value: values.areas ?? "" },
-              { label: dict.buyer.type, value: values.type ? dict.ptype[values.type as PropertyType] : "" },
-              { label: dict.buyer.budget, value: values.budget ?? "" },
-              { label: dict.buyer.size, value: values.size ?? "" },
-              { label: dict.buyer.notes, value: values.notes ?? "" },
-            ]
-          : [
-              { label: dict.contact.name, value: values.name ?? "" },
-              { label: dict.contact.phone, value: values.phone ?? "" },
-              { label: dict.contact.message, value: values.message ?? "" },
-            ];
-
-    const lead = buildLead(subject, fields);
-    const successMsg =
-      variant === "owner"
-        ? lead
-          ? dict.owner.success
-          : dict.owner.successNoChannel
-        : variant === "buyer"
-          ? lead
-            ? dict.buyer.success
-            : dict.buyer.successNoChannel
-          : lead
-            ? dict.owner.success
-            : dict.contact.noChannels;
-
-    if (lead) {
-      window.open(lead.href, "_blank", "noopener,noreferrer");
+    if (submitting) return;
+    setError(null);
+    setSubmitting(true);
+    try {
+      const payload = {
+        ...values,
+        type: variant,
+        source: `website:${variant}`,
+        locale: l,
+        ...(reference ? { reference } : {}),
+        _ts: startedAt.current,
+      };
+      const res = await fetch("/api/lead", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
+      if (res.ok) {
+        setDone(true);
+      } else {
+        setError(
+          l === "ar"
+            ? "تعذّر إرسال النموذج. يرجى المحاولة مرة أخرى."
+            : "We couldn't submit the form. Please try again.",
+        );
+      }
+    } catch {
+      setError(
+        l === "ar"
+          ? "تعذّر الاتصال. تحقّق من الشبكة وحاول مرة أخرى."
+          : "Connection failed. Check your network and try again.",
+      );
+    } finally {
+      setSubmitting(false);
     }
-    setDone({ href: lead?.href, message: successMsg });
   };
 
   if (done) {
-    const cta = done.href ? (done.href.startsWith("https://wa.me") ? dict.common.whatsapp : dict.common.email) : "";
-    return <SuccessPanel message={done.message} href={done.href} ctaLabel={cta} />;
+    const msg =
+      variant === "owner" ? dict.owner.success : variant === "buyer" ? dict.buyer.success : dict.contact.success;
+    return <SuccessPanel message={msg} />;
   }
 
   const req = dict.common.required;
 
   return (
-    <form onSubmit={onSubmit} className="flex flex-col gap-5">
+    <form onSubmit={onSubmit} className="flex flex-col gap-5" noValidate>
+      {/* Honeypot — hidden from humans; bots that fill it are silently dropped server-side. */}
+      <div aria-hidden className="absolute -left-[9999px] h-0 w-0 overflow-hidden" tabIndex={-1}>
+        <label htmlFor="company">Company</label>
+        <input
+          id="company"
+          name="company"
+          autoComplete="off"
+          tabIndex={-1}
+          value={values.company ?? ""}
+          onChange={(e) => set("company", e.target.value)}
+        />
+      </div>
+
       <div className="grid gap-5 sm:grid-cols-2">
         <Field label={variant === "owner" ? dict.owner.name : variant === "buyer" ? dict.buyer.name : dict.contact.name} htmlFor="name" required>
           <Input id="name" name="name" required autoComplete="name" value={values.name ?? ""} onChange={(e) => set("name", e.target.value)} />
@@ -190,10 +178,22 @@ export function LeadForm({
         </Field>
       ) : null}
 
+      {error ? (
+        <p role="alert" className="rounded-lg border border-danger/30 bg-danger-soft px-4 py-2.5 text-sm text-danger">
+          {error}
+        </p>
+      ) : null}
+
       <div className="flex items-center gap-3 pt-1">
-        <Button type="submit" size="lg">
-          {variant === "owner" ? dict.owner.submit : variant === "buyer" ? dict.buyer.submit : dict.contact.submit}
-          <Icon name="arrow" className="h-4 w-4 rtl:-scale-x-100" />
+        <Button type="submit" size="lg" className={submitting ? "pointer-events-none opacity-70" : undefined}>
+          {submitting
+            ? dict.common.sending
+            : variant === "owner"
+              ? dict.owner.submit
+              : variant === "buyer"
+                ? dict.buyer.submit
+                : dict.contact.submit}
+          {!submitting ? <Icon name="arrow" className="h-4 w-4 rtl:-scale-x-100" /> : null}
         </Button>
         <span className="text-xs text-content-subtle">
           <span className="text-primary">*</span> {req}

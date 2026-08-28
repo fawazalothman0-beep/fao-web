@@ -93,7 +93,6 @@ export default async function PropertyPage({
               <PropertyMedia property={p} className="aspect-[16/9] w-full" />
               <div className="absolute inset-x-0 top-0 flex items-start justify-between p-4">
                 <Badge tone={p.transaction === "sale" ? "navy" : "blue"}>{d.transaction[p.transaction]}</Badge>
-                {p.sample ? <Badge tone="gold">{`${d.common.sample} · ${d.common.illustrative}`}</Badge> : null}
               </div>
             </div>
 
