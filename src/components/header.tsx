@@ -22,6 +22,7 @@ export function Header({ locale, dict }: { locale: Locale; dict: Dict }) {
   const nav: NavItem[] = [
     { href: `${base}`, label: dict.nav.home },
     { href: `${base}/properties`, label: dict.nav.properties },
+    { href: `${base}/requests`, label: dict.nav.requests },
     { href: `${base}/services`, label: dict.nav.services },
     { href: `${base}/about`, label: dict.nav.about },
     { href: `${base}/contact`, label: dict.nav.contact },

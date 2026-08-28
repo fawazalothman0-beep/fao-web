@@ -9,6 +9,7 @@ const en = {
   nav: {
     home: "Home",
     properties: "Properties",
+    requests: "Requests",
     services: "Services",
     listProperty: "List your property",
     buyerRequest: "Buyer request",
@@ -46,6 +47,7 @@ const en = {
     loading: "Loading…",
   },
   transaction: { sale: "For sale", rent: "For rent", all: "All" },
+  purpose: { buy: "Looking to buy", rent: "Looking to rent" },
   category: {
     residential: "Residential",
     commercial: "Commercial",
@@ -129,6 +131,23 @@ const en = {
     notFound: "Property not found",
     notFoundLead: "This reference may have been removed or is no longer available.",
     mapUnavailable: "Map location will be shown when available.",
+  },
+  requests: {
+    title: "Client requests",
+    lead: "Active buyer and tenant requirements we're sourcing. Have a matching property? Contact us — every request is shown anonymized, with no client details.",
+    resultsOne: "request",
+    resultsMany: "requests",
+    empty: "No published requests right now.",
+    emptyHint: "Check back soon, or list your property and we'll match it against live requirements.",
+    budget: "Budget",
+    size: "Size",
+    minBeds: "Min. bedrooms",
+    requirements: "Requirements",
+    interested: "Have a matching property?",
+    interestedLead: "Contact us with the reference and we'll coordinate — all client information stays private with us.",
+    contactCta: "Contact us about this request",
+    notFound: "Request not found",
+    notFoundLead: "This reference may have been closed or is no longer available.",
   },
   services: {
     title: "Services",
@@ -246,6 +265,9 @@ const en = {
     propertiesTitle: "Properties — Fawaz Al Othman Real Estate",
     propertiesDesc:
       "Browse residential, commercial, land and investment properties for sale and rent in Kuwait.",
+    requestsTitle: "Client requests — Fawaz Al Othman Real Estate",
+    requestsDesc:
+      "Active, anonymized buyer and tenant requirements in Kuwait. Have a matching property? Contact us.",
     servicesTitle: "Services — Fawaz Al Othman Real Estate",
     servicesDesc:
       "Property sales, marketing, buyer and owner representation, property management and consulting in Kuwait.",
@@ -265,6 +287,7 @@ const ar = {
   nav: {
     home: "الرئيسية",
     properties: "العقارات",
+    requests: "الطلبات",
     services: "خدماتنا",
     listProperty: "أضِف عقارك",
     buyerRequest: "طلب شراء",
@@ -302,6 +325,7 @@ const ar = {
     loading: "جارٍ التحميل…",
   },
   transaction: { sale: "للبيع", rent: "للإيجار", all: "الكل" },
+  purpose: { buy: "مطلوب للشراء", rent: "مطلوب للإيجار" },
   category: {
     residential: "سكني",
     commercial: "تجاري",
@@ -385,6 +409,23 @@ const ar = {
     notFound: "العقار غير موجود",
     notFoundLead: "قد يكون هذا الرقم المرجعي أُزيل أو لم يعد متاحاً.",
     mapUnavailable: "سيظهر موقع الخريطة عند توفّره.",
+  },
+  requests: {
+    title: "طلبات العملاء",
+    lead: "متطلّبات فعلية لمشترين ومستأجرين نبحث لها عن عقارات. لديك عقار مطابق؟ تواصل معنا — كل طلب معروض دون أي بيانات تعريف للعميل.",
+    resultsOne: "طلب",
+    resultsMany: "طلبات",
+    empty: "لا توجد طلبات منشورة حالياً.",
+    emptyHint: "عاود الزيارة قريباً، أو أضِف عقارك وسنطابقه مع المتطلّبات الفعلية.",
+    budget: "الميزانية",
+    size: "المساحة",
+    minBeds: "أقل عدد غرف",
+    requirements: "المتطلبات",
+    interested: "لديك عقار مطابق؟",
+    interestedLead: "تواصل معنا مع الرقم المرجعي وننسّق — تبقى كل بيانات العميل خاصة لدينا.",
+    contactCta: "تواصل معنا بخصوص هذا الطلب",
+    notFound: "الطلب غير موجود",
+    notFoundLead: "قد يكون هذا الرقم أُغلق أو لم يعد متاحاً.",
   },
   services: {
     title: "خدماتنا",
@@ -502,6 +543,9 @@ const ar = {
     propertiesTitle: "العقارات — فواز العثمان العقارية",
     propertiesDesc:
       "تصفّح العقارات السكنية والتجارية والأراضي والعقارات الاستثمارية للبيع والإيجار في الكويت.",
+    requestsTitle: "طلبات العملاء — فواز العثمان العقارية",
+    requestsDesc:
+      "متطلّبات فعلية لمشترين ومستأجرين في الكويت، معروضة دون بيانات العميل. لديك عقار مطابق؟ تواصل معنا.",
     servicesTitle: "خدماتنا — فواز العثمان العقارية",
     servicesDesc:
       "بيع العقارات، والتسويق، وتمثيل المشتري والمالك، وإدارة الأملاك، والاستشارات في الكويت.",
