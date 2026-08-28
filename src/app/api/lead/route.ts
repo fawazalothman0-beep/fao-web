@@ -95,6 +95,30 @@ export async function POST(req: NextRequest) {
     userAgent: (req.headers.get("user-agent") || "").slice(0, 300),
   };
 
+  // Primary store: the FAO internal CRM (Supabase). The public site never reads
+  // leads back; it only writes them via the sanitized `submit_lead` intake RPC.
+  try {
+    const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
+    const key = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+    if (url && key) {
+      const { createClient } = await import("@supabase/supabase-js");
+      const supabase = createClient(url, key, { auth: { persistSession: false } });
+      const source =
+        type === "owner" ? "website_owner" : type === "buyer" ? "website_buyer" : "website_contact";
+      const payload: Record<string, string> = {};
+      for (const f of FIELDS) {
+        if (["name", "phone", "email", "message"].includes(f)) continue;
+        if (lead[f]) payload[f] = lead[f];
+      }
+      await supabase.rpc("submit_lead", {
+        p: { source, name: lead.name, phone: lead.phone, email: lead.email, message: lead.message, ip, payload },
+      });
+    }
+  } catch (err) {
+    console.error("[lead] CRM persistence failed:", err instanceof Error ? err.message : err);
+    // Non-fatal — the Blob fallback below still captures the lead.
+  }
+
   try {
     if (process.env.BLOB_READ_WRITE_TOKEN) {
       const { put } = await import("@vercel/blob");
