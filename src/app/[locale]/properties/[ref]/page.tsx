@@ -5,15 +5,15 @@ import { Container, Section, Badge, Button, Divider } from "@/components/ui";
 import { Icon } from "@/components/icons";
 import { PropertyMedia } from "@/components/property-card";
 import { getDict } from "@/i18n/dictionaries";
-import { isLocale, locales } from "@/i18n/config";
+import { isLocale } from "@/i18n/config";
 import { buildMetadata } from "@/lib/seo";
-import { getProperties, getProperty } from "@/content/properties";
+import { getProperty } from "@/content/properties";
 import { site, hasAnyContact, type Locale } from "@/config/site";
 import { formatMoney, whatsappLink, mailtoLink } from "@/lib/format";
 
-export function generateStaticParams() {
-  return locales.flatMap((locale) => getProperties().map((p) => ({ locale, ref: p.ref })));
-}
+// Fully dynamic: inventory is CMS/data-driven and may be empty; a missing ref
+// must resolve to a proper 404 (notFound) rather than a static-generation error.
+export const dynamicParams = true;
 
 export async function generateMetadata({
   params,
