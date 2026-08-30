@@ -16,8 +16,10 @@ export interface ContactChannel {
   whatsapp: string | null; // digits only, no "+"
   /** Ready-to-use WhatsApp chat link (e.g. a wa.me/message/… short link). */
   whatsappUrl: string | null;
-  /** Conventional mailbox on the owned domain. Confirm the exact address exists. */
+  /** Primary mailbox on the owned domain. */
   email: string | null;
+  /** All official mailboxes to surface (send/receive). */
+  emails: string[];
   addressAr: string | null;
   addressEn: string | null;
   /** Google Maps place URL or embed src. null hides the map. */
@@ -43,9 +45,10 @@ export const site = {
   contact: {
     phone: "+96566961919",
     phones: ["+96566961919", "+96599586343"],
-    whatsapp: null, // digits unknown; WhatsApp uses the official short link below
-    whatsappUrl: "https://wa.me/message/RI5SA2F6D7HGJ1",
-    email: "info@fawazalothmanre.com", // conventional default on the owned domain — confirm it exists
+    whatsapp: "96566961919", // OFFICIAL verified WhatsApp line (digits, no "+") — enables wa.me/<digits>?text=
+    whatsappUrl: null, // prefer digits form so all CTAs can prefill context
+    email: "info@fawazalothmanre.com", // primary
+    emails: ["info@fawazalothmanre.com", "f.alothman@fawazalothmanre.com"], // official send/receive mailboxes
     addressAr: null,
     addressEn: null,
     mapUrl: null,

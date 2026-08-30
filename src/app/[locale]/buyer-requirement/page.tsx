@@ -1,10 +1,12 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { Container, Section, Eyebrow } from "@/components/ui";
+import { Container, Section, Eyebrow, Button } from "@/components/ui";
+import { Icon } from "@/components/icons";
 import { LeadForm } from "@/components/lead-form";
 import { getDict } from "@/i18n/dictionaries";
 import { isLocale } from "@/i18n/config";
 import { buildMetadata } from "@/lib/seo";
+import { waLink } from "@/lib/format";
 import type { Locale } from "@/config/site";
 
 export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }): Promise<Metadata> {
@@ -32,6 +34,18 @@ export default async function BuyerPage({ params }: { params: Promise<{ locale: 
           <div className="card-surface mt-8 p-6 sm:p-8">
             <LeadForm variant="buyer" locale={l} dict={d} />
           </div>
+          {(() => {
+            const href = waLink(l === "ar"
+              ? "مرحباً، أبحث عن عقار عبر فواز العثمان العقارية."
+              : "Hello, I'm looking for a property with Fawaz Al Othman Real Estate.");
+            return href ? (
+              <div className="mt-4 flex justify-center">
+                <Button href={href} variant="gold" target="_blank" rel="noopener noreferrer">
+                  <Icon name="whatsapp" className="h-5 w-5" /> {d.common.whatsapp}
+                </Button>
+              </div>
+            ) : null;
+          })()}
         </div>
       </Container>
     </Section>

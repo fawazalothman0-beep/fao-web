@@ -1,4 +1,17 @@
-import type { Locale } from "@/config/site";
+import { site, type Locale } from "@/config/site";
+
+/**
+ * Central WhatsApp link builder — the ONLY place CTAs derive the WhatsApp target.
+ * Uses the single verified number from site.contact.whatsapp (digits) with an optional
+ * prefilled context; falls back to a ready whatsappUrl, else null (no channel configured).
+ * Never include private client/CRM data in `context`.
+ */
+export function waLink(context?: string): string | null {
+  const c = site.contact;
+  if (c.whatsapp) return whatsappLink(c.whatsapp, context ?? site.name.ar);
+  if (c.whatsappUrl) return c.whatsappUrl;
+  return null;
+}
 
 /** Money in KWD, LTR digits, 3-decimals convention shown compactly. */
 export function formatMoney(v: number, locale: Locale): string {

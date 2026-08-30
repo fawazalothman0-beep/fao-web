@@ -28,7 +28,7 @@ export default async function ContactPage({ params }: { params: Promise<{ locale
   const phones = c.phones?.length ? c.phones : c.phone ? [c.phone] : [];
   for (const ph of phones) channels.push({ icon: "phone", label: d.common.call, value: ph, href: telLink(ph), dir: "ltr" });
   if (c.whatsappUrl || c.whatsapp) channels.push({ icon: "whatsapp", label: d.common.whatsapp, value: d.common.whatsapp, href: c.whatsappUrl ?? whatsappLink(c.whatsapp!, site.name[l]) });
-  if (c.email) channels.push({ icon: "mail", label: d.common.email, value: c.email, href: mailtoLink(c.email, site.name[l], ""), dir: "ltr" });
+  for (const em of (c.emails?.length ? c.emails : c.email ? [c.email] : [])) channels.push({ icon: "mail", label: d.common.email, value: em, href: mailtoLink(em, site.name[l], ""), dir: "ltr" });
   if (address) channels.push({ icon: "pin", label: d.common.area, value: address });
 
   return (

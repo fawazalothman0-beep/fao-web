@@ -6,6 +6,8 @@ import { usePathname } from "next/navigation";
 import { Logo } from "@/components/logo";
 import { LangSwitcher } from "@/components/lang-switcher";
 import { Button } from "@/components/ui";
+import { Icon } from "@/components/icons";
+import { waLink } from "@/lib/format";
 import { cn } from "@/lib/cn";
 import type { Locale } from "@/config/site";
 import type { Dict } from "@/i18n/dictionaries";
@@ -54,6 +56,15 @@ export function Header({ locale, dict }: { locale: Locale; dict: Dict }) {
 
         <div className="flex items-center gap-2">
           <LangSwitcher locale={locale} className="hidden sm:inline-flex" />
+          {(() => {
+            const wa = waLink(locale === "ar" ? "مرحباً فواز العثمان العقارية، لديّ استفسار." : "Hello Fawaz Al Othman Real Estate, I have an enquiry.");
+            return wa ? (
+              <a href={wa} target="_blank" rel="noopener noreferrer" aria-label={dict.common.whatsapp}
+                className="inline-flex h-10 w-10 items-center justify-center rounded-lg border border-border text-[#25D366] transition-colors hover:bg-surface-sunken">
+                <Icon name="whatsapp" className="h-5 w-5" />
+              </a>
+            ) : null;
+          })()}
           <Button href={`${base}/list-your-property`} size="md" className="hidden md:inline-flex">
             {dict.nav.listProperty}
           </Button>

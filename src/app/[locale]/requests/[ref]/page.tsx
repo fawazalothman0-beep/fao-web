@@ -59,10 +59,12 @@ export default async function RequestDetailPage({
   if (r.governorate) specs.push({ label: d.common.governorate, value: r.governorate });
 
   // Contact routes to FAO with the anonymized reference — NEVER to any client.
+  const rType = r.type ? d.ptype[r.type as keyof typeof d.ptype] : r.category ? d.category[r.category as keyof typeof d.category] : "";
+  const rWhere = [r.area, r.governorate].filter(Boolean).join(" - ");
   const contactMsg =
     l === "ar"
-      ? `مرحباً، لديّ عقار قد يطابق الطلب رقم ${r.ref}.`
-      : `Hello, I may have a property matching request ${r.ref}.`;
+      ? `مرحباً، لديّ عقار قد يطابق الطلب ${r.ref}${rType ? ` (${rType}` : ""}${rWhere ? `${rType ? " - " : " ("}${rWhere}` : ""}${rType || rWhere ? ")" : ""}.`
+      : `Hello, I may have a property matching request ${r.ref}${rType ? ` (${rType}` : ""}${rWhere ? `${rType ? " - " : " ("}${rWhere}` : ""}${rType || rWhere ? ")" : ""}.`;
   const c = site.contact;
   const waHref = c.whatsappUrl ?? (c.whatsapp ? whatsappLink(c.whatsapp, contactMsg) : null);
   const primaryHref = waHref

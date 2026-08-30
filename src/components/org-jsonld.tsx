@@ -26,11 +26,11 @@ export function OrgJsonLd({ locale }: { locale: Locale }) {
     areaServed: "KW",
     availableLanguage: ["Arabic", "English"],
   }));
-  if (c.email) {
+  for (const em of (c.emails?.length ? c.emails : c.email ? [c.email] : [])) {
     contactPoints.push({
       "@type": "ContactPoint",
       contactType: "customer support",
-      email: c.email,
+      email: em,
       areaServed: "KW",
       availableLanguage: ["Arabic", "English"],
     });

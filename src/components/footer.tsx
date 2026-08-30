@@ -62,17 +62,13 @@ export function Footer({ locale, dict }: { locale: Locale; dict: Dict }) {
                   </a>
                 </li>
               ) : null}
-              {c.email ? (
-                <li>
-                  <a
-                    href={mailtoLink(c.email, site.name[locale], "")}
-                    className="transition-colors hover:text-white"
-                    dir="ltr"
-                  >
-                    {c.email}
+              {(c.emails?.length ? c.emails : c.email ? [c.email] : []).map((em) => (
+                <li key={em}>
+                  <a href={mailtoLink(em, site.name[locale], "")} className="transition-colors hover:text-white" dir="ltr">
+                    {em}
                   </a>
                 </li>
-              ) : null}
+              ))}
               {c[locale === "ar" ? "addressAr" : "addressEn"] ? (
                 <li>{c[locale === "ar" ? "addressAr" : "addressEn"]}</li>
               ) : null}
