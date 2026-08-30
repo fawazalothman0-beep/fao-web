@@ -23,7 +23,7 @@ export function Footer({ locale, dict }: { locale: Locale; dict: Dict }) {
       <Container className="py-14">
         <div className="grid gap-10 md:grid-cols-[1.4fr_1fr_1fr]">
           <div className="flex flex-col gap-4">
-            <Logo locale={locale} onPlate />
+            <Logo locale={locale} onPlate imgClassName="h-16 sm:h-[72px]" />
             <p className="max-w-sm text-sm leading-relaxed text-white/70">{dict.footer.tagline}</p>
           </div>
 

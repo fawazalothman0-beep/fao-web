@@ -12,11 +12,14 @@ export function Logo({
   locale,
   onPlate = false,
   className,
+  imgClassName,
   priority = false,
 }: {
   locale: Locale;
   onPlate?: boolean;
   className?: string;
+  /** Override the rendered logo size (height + w-auto keeps the aspect ratio). */
+  imgClassName?: string;
   priority?: boolean;
 }) {
   const alt = site.name[locale];
@@ -29,7 +32,7 @@ export function Logo({
       <span
         className={cn(
           "inline-flex items-center justify-center",
-          onPlate && "rounded-lg bg-white p-1.5 shadow-sm",
+          onPlate && "rounded-lg bg-white p-1 shadow-sm",
         )}
       >
         <Image
@@ -38,7 +41,7 @@ export function Logo({
           width={1125}
           height={992}
           priority={priority}
-          className="h-11 w-auto sm:h-12"
+          className={cn("w-auto", imgClassName ?? "h-11 sm:h-12")}
         />
       </span>
     </Link>

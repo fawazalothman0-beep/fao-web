@@ -34,8 +34,8 @@ export function Header({ locale, dict }: { locale: Locale; dict: Dict }) {
 
   return (
     <header className="sticky top-0 z-50 border-b border-border/70 bg-surface/85 backdrop-blur-md">
-      <div className="container-page flex h-16 items-center justify-between gap-4 sm:h-18">
-        <Logo locale={locale} priority />
+      <div className="container-page flex h-[76px] items-center justify-between gap-3 sm:h-20 sm:gap-4">
+        <Logo locale={locale} priority imgClassName="h-[52px] sm:h-[68px]" />
 
         <nav className="hidden items-center gap-1 lg:flex" aria-label={dict.nav.menu}>
           {nav.map((n) => (
