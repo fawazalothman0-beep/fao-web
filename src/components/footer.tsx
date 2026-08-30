@@ -43,17 +43,17 @@ export function Footer({ locale, dict }: { locale: Locale; dict: Dict }) {
           <div className="flex flex-col gap-3">
             <h3 className="text-sm font-semibold text-white/90">{dict.footer.contact}</h3>
             <ul className="flex flex-col gap-2 text-sm text-white/70">
-              {c.phone ? (
-                <li>
-                  <a href={telLink(c.phone)} className="transition-colors hover:text-white nums" dir="ltr">
-                    {c.phone}
+              {(c.phones?.length ? c.phones : c.phone ? [c.phone] : []).map((ph) => (
+                <li key={ph}>
+                  <a href={telLink(ph)} className="transition-colors hover:text-white nums" dir="ltr">
+                    {ph}
                   </a>
                 </li>
-              ) : null}
-              {c.whatsapp ? (
+              ))}
+              {c.whatsappUrl || c.whatsapp ? (
                 <li>
                   <a
-                    href={whatsappLink(c.whatsapp, site.name[locale])}
+                    href={c.whatsappUrl ?? whatsappLink(c.whatsapp!, site.name[locale])}
                     className="transition-colors hover:text-white"
                     target="_blank"
                     rel="noopener noreferrer"

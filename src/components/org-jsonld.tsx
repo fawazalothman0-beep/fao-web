@@ -18,16 +18,24 @@ export function OrgJsonLd({ locale }: { locale: Locale }) {
     knowsLanguage: ["ar", "en"],
   };
   if (sameAs.length) data.sameAs = sameAs;
-  if (c.phone || c.email) {
-    data.contactPoint = {
+  const phones = c.phones?.length ? c.phones : c.phone ? [c.phone] : [];
+  const contactPoints: Record<string, unknown>[] = phones.map((tel) => ({
+    "@type": "ContactPoint",
+    contactType: "sales",
+    telephone: tel,
+    areaServed: "KW",
+    availableLanguage: ["Arabic", "English"],
+  }));
+  if (c.email) {
+    contactPoints.push({
       "@type": "ContactPoint",
-      contactType: "sales",
-      ...(c.phone && { telephone: c.phone }),
-      ...(c.email && { email: c.email }),
+      contactType: "customer support",
+      email: c.email,
       areaServed: "KW",
       availableLanguage: ["Arabic", "English"],
-    };
+    });
   }
+  if (contactPoints.length) data.contactPoint = contactPoints;
   if (address) {
     data.address = { "@type": "PostalAddress", addressCountry: "KW", streetAddress: address };
   }

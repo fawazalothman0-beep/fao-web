@@ -11,7 +11,11 @@ export type Locale = "ar" | "en";
 export interface ContactChannel {
   /** E.164 phone, digits only for wa.me (e.g. "965XXXXXXXX"). null = not yet provided. */
   phone: string | null;
+  /** Additional call numbers (E.164, e.g. "+965XXXXXXXX"). Rendered as tel: links. */
+  phones: string[];
   whatsapp: string | null; // digits only, no "+"
+  /** Ready-to-use WhatsApp chat link (e.g. a wa.me/message/… short link). */
+  whatsappUrl: string | null;
   /** Conventional mailbox on the owned domain. Confirm the exact address exists. */
   email: string | null;
   addressAr: string | null;
@@ -35,10 +39,12 @@ export const site = {
     en: "Fawaz Al Othman Real Estate",
   },
   country: { ar: "الكويت", en: "Kuwait" },
-  // Contact — fill VERIFIED values only. Blanks are hidden in the UI.
+  // Contact — VERIFIED values provided by the owner.
   contact: {
-    phone: null,
-    whatsapp: null,
+    phone: "+96566961919",
+    phones: ["+96566961919", "+96599586343"],
+    whatsapp: null, // digits unknown; WhatsApp uses the official short link below
+    whatsappUrl: "https://wa.me/message/RI5SA2F6D7HGJ1",
     email: "info@fawazalothmanre.com", // conventional default on the owned domain — confirm it exists
     addressAr: null,
     addressEn: null,
@@ -56,4 +62,6 @@ export const otherLocale = (locale: Locale): Locale => (locale === "ar" ? "en" :
 
 /** True when at least one live contact channel is configured. */
 export const hasAnyContact = (c: ContactChannel = site.contact) =>
-  Boolean(c.phone || c.whatsapp || c.email || c.addressAr || c.addressEn);
+  Boolean(
+    c.phone || (c.phones && c.phones.length) || c.whatsapp || c.whatsappUrl || c.email || c.addressAr || c.addressEn,
+  );

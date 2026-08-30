@@ -56,11 +56,9 @@ export default async function PropertyPage({
       ? `مرحباً، أنا مهتم بالعقار ${p.title.ar} (${p.ref}).`
       : `Hello, I'm interested in ${p.title.en} (${p.ref}).`;
   const c = site.contact;
-  const primaryHref = c.whatsapp
-    ? whatsappLink(c.whatsapp, contactMsg)
-    : c.email
-      ? mailtoLink(c.email, `${p.title[l]} — ${p.ref}`, contactMsg)
-      : `${base}/contact`;
+  const waHref = c.whatsappUrl ?? (c.whatsapp ? whatsappLink(c.whatsapp, contactMsg) : null);
+  const primaryHref = waHref
+    ?? (c.email ? mailtoLink(c.email, `${p.title[l]} — ${p.ref}`, contactMsg) : `${base}/contact`);
 
   const jsonLd = {
     "@context": "https://schema.org",
@@ -191,13 +189,13 @@ export default async function PropertyPage({
                 <span className="nums font-semibold text-content" dir="ltr">{p.ref}</span>
               </div>
               <div className="flex flex-col gap-2">
-                {c.whatsapp ? (
-                  <Button href={primaryHref} variant="gold" className="w-full" target="_blank" rel="noopener noreferrer">
+                {waHref ? (
+                  <Button href={waHref} variant="gold" className="w-full" target="_blank" rel="noopener noreferrer">
                     <Icon name="whatsapp" className="h-5 w-5" />
                     {d.common.whatsapp}
                   </Button>
                 ) : null}
-                <Button href={c.whatsapp ? `${base}/contact` : primaryHref} variant={c.whatsapp ? "secondary" : "primary"} className="w-full">
+                <Button href={waHref ? `${base}/contact` : primaryHref} variant={waHref ? "secondary" : "primary"} className="w-full">
                   <Icon name="mail" className="h-5 w-5" />
                   {d.property.contactAgent}
                 </Button>
